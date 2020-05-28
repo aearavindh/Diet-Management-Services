@@ -25,7 +25,7 @@ public class AuthenticationController {
 	
 	
 	@PostMapping("/register")
-	@ApiOperation("Registration")
+	@ApiOperation("Registration aea")
 	public String register(@RequestBody Challenger challenger) {
 		
 		return authenticationService.register(challenger);
