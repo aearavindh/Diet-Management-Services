@@ -19,15 +19,15 @@ Building Docker Image:
      - runner-1
   script: 
      - docker login -u aearavindh -p $DOCKER_PASSWORD
-     - docker build -t aearavindh/diet-services:$CI_JOB_ID .
-     - docker push aearavindh/diet-services:$CI_JOB_ID
+     - docker build -t aearavindh/diet-services:latest .
+     - docker push aearavindh/diet-services:latest
      
 Deployment:
   stage: deploy
   tags:
      - runner-1
   script:
-     - sshpass -p $SSH_USER_PASSWORD ssh -v -o StrictHostKeyChecking=no $DEPLOYMENT_HOST sudo docker container rm -f diet-services;sudo docker pull aearavindh/diet-services:$CI_JOB_ID;sudo docker container run -e MAIL_PASSWORD=$MAIL_PASSWORD -d -p 8000:8000 --name diet-services aearavindh/diet-services:$CI_JOB_ID
+     - sshpass -p $SSH_USER_PASSWORD ssh -v -o StrictHostKeyChecking=no $DEPLOYMENT_HOST sudo docker container rm -f diet-services;sudo docker container run -e MAIL_PASSWORD=$MAIL_PASSWORD -d -p 8000:8000 --name diet-services aearavindh/diet-services:latest
   environment:
      name: production
      url: $PRODUCTION_ENVIRONMENT
