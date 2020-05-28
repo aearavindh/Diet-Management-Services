@@ -12,6 +12,7 @@ pipeline {
 		stage('Docker build') {
             steps {
 			  withCredentials([string(credentialsId: 'DOCKER_PASSWORD', variable: 'docker_password')]){
+			    sh 'sudo docker service restart'
                 sh 'sudo docker login -u aearavindh -p ${docker_password}'
 				sh 'sudo docker build -t aearavindh/diet-services:${BUILD_NUMBER} .'
 				sh 'sudo docker push aearavindh/diet-services:${BUILD_NUMBER}'
