@@ -1,10 +1,10 @@
 stages:
-  - test_build
+  - test
   - docker_build
   - deploy
 
 Testing and Building:
-  stage: test_build
+  stage: test
   image: maven:latest
   script: 
      - mvn clean package
@@ -12,6 +12,9 @@ Testing and Building:
   artifacts:
     paths:
      - target/Diet_Management_Services-1.0.jar
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
      
 Building Docker Image:
   stage: docker_build
