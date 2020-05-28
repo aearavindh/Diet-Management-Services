@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Compile-Build-Test') {
             steps {
-                sh 'mvn clean package -skipTests=true'
+                sh 'mvn clean package'
             }
         }
 		stage('Docker build') {
