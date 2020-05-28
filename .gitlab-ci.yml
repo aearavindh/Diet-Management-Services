@@ -18,9 +18,9 @@ Building Docker Image:
   tags:
      - runner-1
   script: 
-     - sudo docker login -u aearavindh -p $DOCKER_PASSWORD
-     - sudo docker build -t aearavindh/diet-services:$CI_JOB_ID .
-     - sudo docker push aearavindh/diet-services:$CI_JOB_ID
+     - docker login -u aearavindh -p $DOCKER_PASSWORD
+     - docker build -t aearavindh/diet-services:$CI_JOB_ID .
+     - docker push aearavindh/diet-services:$CI_JOB_ID
      
 Deployment:
   stage: deploy
