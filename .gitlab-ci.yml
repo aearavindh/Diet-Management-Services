@@ -4,7 +4,7 @@ stages:
   - deploy
 
 Testing and Building:
-  stage: build
+  stage: test_build
   tags:
      - runner-1
   script: 
