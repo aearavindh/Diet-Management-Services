@@ -28,7 +28,7 @@ Deployment:
      - runner-1
   script:
      - sshpass -p $SSH_USER_PASSWORD ssh -v -o StrictHostKeyChecking=no $DEPLOYMENT_HOST sudo docker container rm -f diet-services
-     - sshpass -p $SSH_USER_PASSWORD ssh -v -o StrictHostKeyChecking=no $DEPLOYMENT_HOST sudo docker container run -d -p 8000:8000 --name diet-services aearavindh/diet-services:latest
+     - sshpass -p $SSH_USER_PASSWORD ssh -v -o StrictHostKeyChecking=no $DEPLOYMENT_HOST sudo docker pull aearavindh/diet-services:latest;sudo docker container run -d -p 8000:8000 --name diet-services aearavindh/diet-services:latest
   environment:
      name: production
      url: $PRODUCTION_ENVIRONMENT
