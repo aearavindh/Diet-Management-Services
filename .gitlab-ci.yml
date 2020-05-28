@@ -5,7 +5,8 @@ stages:
 
 Testing and Building:
   stage: test_build
-  image: runner-1
+  tags:
+     - runner-1
   script: 
      - mvn clean package
      - cat target/site/jacoco/index.html
