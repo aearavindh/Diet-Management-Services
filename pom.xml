@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.aea</groupId>
 	<artifactId>Diet_Management_Services</artifactId>
-	<version>1.0</version>
+	<version>1.0-SNAPSHOT</version>
 	<name>Diet_Management_Services</name>
 	<description>Web Services for Diet Management System</description>
 

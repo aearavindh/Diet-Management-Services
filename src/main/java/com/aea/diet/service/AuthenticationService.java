@@ -16,10 +16,10 @@ import com.aea.diet.model.User;
 public class AuthenticationService {
 		
 	@Autowired
-	ChallengerRepository challengerRepository;
+	private ChallengerRepository challengerRepository;
 	
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 	
 	@Autowired
 	private EmailService emailService;
