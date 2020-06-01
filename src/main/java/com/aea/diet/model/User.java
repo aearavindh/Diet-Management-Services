@@ -3,6 +3,8 @@ package com.aea.diet.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User {
 	
@@ -10,18 +12,20 @@ public class User {
 	private String email;
 	private String role;
 	private String name;
+	@JsonIgnore
 	private String password;
 	private String groupName;
 	private String batchName;
 	private String referralCode;
 	private String code;
+	private String mobile;
 	
 	public User() {
 		super();
 	}
 
 	public User(String email, String role, String name, String password, String groupName, String batchName,
-			String referralCode, String code) {
+			String referralCode, String code, String mobile) {
 		super();
 		this.email = email;
 		this.role = role;
@@ -31,6 +35,7 @@ public class User {
 		this.batchName = batchName;
 		this.referralCode = referralCode;
 		this.code = code;
+		this.mobile = mobile;
 	}
 
 	public String getEmail() {
@@ -63,6 +68,10 @@ public class User {
 
 	public String getCode() {
 		return code;
+	}
+	
+	public String getMobile() {
+		return mobile;
 	}
 	
 	

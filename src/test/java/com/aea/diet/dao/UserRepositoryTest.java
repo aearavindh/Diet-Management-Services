@@ -18,7 +18,7 @@ public class UserRepositoryTest {
 	@Autowired
 	UserRepository userRepository;
 	
-	User mockUser = new User("a","b","c","$2a$10$JVgaATghSKBNlFqjn1VENu59mX3KZVp2ftpskR1Xm9LwwqZqA2kTq","e","f","g","h");
+	User mockUser = new User("a","b","c","$2a$10$JVgaATghSKBNlFqjn1VENu59mX3KZVp2ftpskR1Xm9LwwqZqA2kTq","e","f","g","h","i");
 	
 	@Before
 	public void saveMockData() {

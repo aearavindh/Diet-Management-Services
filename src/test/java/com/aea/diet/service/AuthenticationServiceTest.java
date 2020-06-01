@@ -37,7 +37,7 @@ public class AuthenticationServiceTest {
 	Challenger mockChallenger = new Challenger("a","b","c","d","e","f","g","h","i","j","k",
 			"l","m","n","o","p","q","r","s","t","u");
 	
-	User user = new User("a","b","c","$2a$10$JVgaATghSKBNlFqjn1VENu59mX3KZVp2ftpskR1Xm9LwwqZqA2kTq","e","f","g","h");
+	User user = new User("a","b","c","$2a$10$JVgaATghSKBNlFqjn1VENu59mX3KZVp2ftpskR1Xm9LwwqZqA2kTq","e","f","g","h","i");
 	
 	AuthUser authUser = new AuthUser("a","d","b");
 	
