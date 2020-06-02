@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.aea.diet.dao.BatchRepository;
@@ -78,17 +79,20 @@ public class UserService {
 		
 	}
 
-	public String createGroup(DietGroup dietGroup, String email) throws InvalidUserException {
+	public String createGroup(DietGroup[] dietGroups, String email) throws InvalidUserException {
 		
 		User user = userRepository.findByEmail(email);
+		DietGroup d = null;
 		if(user.getRole().equals("Administrator")) {
-			DietGroup d = groupRepository.findByName(dietGroup.getName());
+			for(int i=0;i<dietGroups.length;i++) {
+			d = groupRepository.findByName(dietGroups[i].getName());
 			if(d != null) {
 		       return "Already exists";
 			}else {
-				groupRepository.save(dietGroup);
-				return "Success";
+				groupRepository.save(dietGroups[i]);
 			}
+			}
+			return "Success";
 	    }else
 		throw new InvalidUserException("Only administrator can create a group. You are not authorized");
 		
@@ -150,13 +154,13 @@ public class UserService {
 			else 
 				batchName = "ABOVE_BMI_25";
 			
-			Optional<DietGroup> group = groupRepository.findById(1);
+			List<DietGroup> group = groupRepository.findAll();
 			
-			if(group.get().getName().equals("CHENNAI")) {
+			if(group.get(0).getName().equals("CHENNAI")) {
 				groupName = challenger.getCity().toUpperCase();
-			}else if(group.get().getName().equals("VEG")) {
+			}else if(group.get(0).getName().equals("VEG")) {
 				groupName = challenger.getDietaryCustom().toUpperCase();
-			}else if(group.get().getName().equals("MALE")) {
+			}else if(group.get(0).getName().equals("MALE")) {
 				groupName = challenger.getGender().toUpperCase();
 			}
 			
@@ -172,8 +176,8 @@ public class UserService {
 				random = (int)(Math.random()*1000);
 			
 			code = code+Integer.toString(random);
-			
-			User user = new User(challenger.getEmail(), "Challenger", challenger.getName(), password, groupName, batchName, challenger.getReferralCode(), code, challenger.getMobile());
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			User user = new User(challenger.getEmail(), "Challenger", challenger.getName(), encoder.encode(password), groupName, batchName, challenger.getReferralCode(), code, challenger.getMobile());
 			userRepository.save(user);
 			
 			MailRequest request = new MailRequest(user.getName(), user.getEmail(), "Application Approved", "Welcome to Diet program "+challenger.getProgram()+". Your application is approved by administrator. Your username is your email id. And the initial password is "+password+". If you want to refer your friends for this program,"

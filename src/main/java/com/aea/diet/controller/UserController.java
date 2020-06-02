@@ -74,9 +74,9 @@ public class UserController {
 	
 	@PostMapping("/create-group")
 	@ApiOperation("Create a new group under existing batch")
-	public String createGroup(@RequestBody DietGroup dietGroup,  @RequestParam String email) throws InvalidUserException {
+	public String createGroup(@RequestBody DietGroup[] dietGroups,  @RequestParam String email) throws InvalidUserException {
 		
-		return userService.createGroup(dietGroup, email);
+		return userService.createGroup(dietGroups, email);
 		
 	}
 	
