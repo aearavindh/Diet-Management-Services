@@ -9,6 +9,7 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
+		
 		stage('Docker build') {
             steps {
 			  withCredentials([string(credentialsId: 'DOCKER_PASSWORD', variable: 'docker_password')]){
@@ -18,6 +19,7 @@ pipeline {
               }
             }
         }
+		
 		stage('Deployment') {
             steps {
 			  withCredentials([string(credentialsId: 'DOCKER_PASSWORD', variable: 'docker_password'),string(credentialsId: 'DEPLOYMENT_PASSWORD', variable: 'deployment_password'), string(credentialsId: 'DEPLOYMENT_HOST', variable: 'deployment_host'), string(credentialsId: 'MAIL_PASSWORD', variable: 'mail_password')]){
