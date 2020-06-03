@@ -39,7 +39,7 @@ public class UserController {
 		
 	}
 	
-	@PostMapping("/refer-challenger")
+	@GetMapping("/refer-challenger")
 	@ApiOperation("Refer new challenger for Diet Management System")
 	public String referChallenger(@RequestParam String sender, @RequestParam String receiver){
 		
@@ -80,7 +80,7 @@ public class UserController {
 		
 	}
 	
-	@PostMapping("/donate")
+	@GetMapping("/donate")
 	@ApiOperation("Donate for the organization")
 	public String donate(@RequestParam String donor, @RequestParam String amount){
 		

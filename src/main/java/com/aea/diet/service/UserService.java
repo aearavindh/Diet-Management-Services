@@ -147,7 +147,7 @@ public class UserService {
 			String password = "Wipro@";
 			String groupName = null;
 			String batchName = null;
-			String code = challenger.getName().substring(0,3);
+			String code = challenger.getName().substring(0,3).toUpperCase();
 			
 			if(Integer.parseInt(challenger.getBmi().substring(0,2))<25)
 				batchName = "BELOW_BMI_25"; 
