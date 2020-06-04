@@ -9,16 +9,20 @@ import org.springframework.stereotype.Service;
 
 import com.aea.diet.dao.BatchRepository;
 import com.aea.diet.dao.ChallengerRepository;
+import com.aea.diet.dao.ChartRepository;
 import com.aea.diet.dao.DonationRepository;
 import com.aea.diet.dao.GroupRepository;
+import com.aea.diet.dao.LogRepository;
 import com.aea.diet.dao.UserRepository;
 import com.aea.diet.exception.InvalidUserException;
 import com.aea.diet.model.Batch;
 import com.aea.diet.model.Challenger;
+import com.aea.diet.model.DailyLog;
 import com.aea.diet.model.DietGroup;
 import com.aea.diet.model.Donation;
 import com.aea.diet.model.MailRequest;
 import com.aea.diet.model.MailResponse;
+import com.aea.diet.model.MonthlyChart;
 import com.aea.diet.model.User;
 
 @Service
@@ -38,6 +42,12 @@ public class UserService {
 	
 	@Autowired
 	private GroupRepository groupRepository;
+	
+	@Autowired
+	private ChartRepository chartRepository;
+	
+	@Autowired
+	private LogRepository logRepository;
 	
 	@Autowired
 	private EmailService emailService;
@@ -301,6 +311,42 @@ public class UserService {
 		}
 		else
 		    throw new InvalidUserException("Only administrator can add users. You are not authorized");
+		
+	}
+
+	public String updateLog(DailyLog dailyLog) {
+		
+		DailyLog d = logRepository.findByEmail(dailyLog.getEmail(), dailyLog.getDate());
+		if(d!=null) 
+			logRepository.delete(d);
+		
+		logRepository.save(dailyLog);
+		
+		return "Success";
+		
+	}
+
+	public String updateChart(MonthlyChart monthlyChart) {
+		
+		MonthlyChart m = chartRepository.findByEmail(monthlyChart.getEmail(), monthlyChart.getMonth());
+		if(m!=null) 
+			chartRepository.delete(m);
+		
+		chartRepository.save(monthlyChart);
+		
+		return "Success";
+		
+	}
+
+	public List<DailyLog> getLogs() {
+		
+		return logRepository.findAll();
+				
+	}
+
+	public List<MonthlyChart> getCharts() {
+
+        return chartRepository.findAll();
 		
 	}
 

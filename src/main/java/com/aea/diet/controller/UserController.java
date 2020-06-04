@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aea.diet.exception.InvalidUserException;
 import com.aea.diet.model.Batch;
 import com.aea.diet.model.Challenger;
+import com.aea.diet.model.DailyLog;
 import com.aea.diet.model.DietGroup;
+import com.aea.diet.model.MonthlyChart;
 import com.aea.diet.model.User;
 import com.aea.diet.service.UserService;
 
@@ -128,5 +130,38 @@ public class UserController {
 		return userService.updateStatus(status, email, challenger);
 		
 	}
+	
+	@PostMapping("/update-log")
+	@ApiOperation("Update the daily logs")
+	public String updateLog(@RequestBody DailyLog dailyLog) {
+		
+		return userService.updateLog(dailyLog);
+		
+	}
+	
+	@PostMapping("/update-chart")
+	@ApiOperation("Update the monthly charts")
+	public String updateChart(@RequestBody MonthlyChart monthlyChart) {
+		
+		return userService.updateChart(monthlyChart);
+		
+	}
+	
+	@GetMapping("/logs")
+	@ApiOperation("Get all the daily logs")
+	public List<DailyLog> getLogs() {
+		
+		return userService.getLogs();
+		
+	}
+	
+	@GetMapping("/charts")
+	@ApiOperation("Get all the monthly charts")
+	public List<MonthlyChart> getCharts() {
+		
+		return userService.getCharts();
+		
+	}
+	
 
 }
