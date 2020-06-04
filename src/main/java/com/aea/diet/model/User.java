@@ -37,6 +37,44 @@ public class User {
 		this.code = code;
 		this.mobile = mobile;
 	}
+	
+	
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	public void setBatchName(String batchName) {
+		this.batchName = batchName;
+	}
+
+	public void setReferralCode(String referralCode) {
+		this.referralCode = referralCode;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
 
 	public String getEmail() {
 		return email;

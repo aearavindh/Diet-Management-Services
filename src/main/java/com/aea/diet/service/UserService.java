@@ -2,7 +2,6 @@ package com.aea.diet.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -86,7 +85,7 @@ public class UserService {
 		if(user.getRole().equals("Administrator")) {
 			for(int i=0;i<dietGroups.length;i++) {
 			d = groupRepository.findByName(dietGroups[i].getName());
-			if(d != null) {
+			if(d != null && d.getBatch().getId()==dietGroups[i].getBatch().getId()) {
 		       return "Already exists";
 			}else {
 				groupRepository.save(dietGroups[i]);
@@ -206,6 +205,102 @@ public class UserService {
 			return "Failure";
 		}
 		
+		
+	}
+
+	public List<User> getAllUsers(String email) throws InvalidUserException {
+		
+		User user = userRepository.findByEmail(email);
+		if(user.getRole().equals("Administrator"))
+			return userRepository.findAll();
+		else
+		    throw new InvalidUserException("Only administrator can get the users. You are not authorized");
+		
+	}
+
+	public String removeUser(String email, String user) throws InvalidUserException {
+		
+		User u = userRepository.findByEmail(email);
+		if(u.getRole().equals("Administrator")){
+			int rowCount = userRepository.deleteByEmail(user);
+			if(rowCount>=1) {
+				MailRequest request = new MailRequest("User", user, "You are removed", "You have removed from the diet program by the administrator");
+				emailService.sendEmail(request);
+				return "Success";
+			}
+			else
+				return "Failure";
+		}
+		else
+		    throw new InvalidUserException("Only administrator can delete the user. You are not authorized");
+		
+		
+		
+	}
+
+	public String modifyUser(String email, User user) {
+		
+		User u = userRepository.findByEmail(email);
+		if(u.getRole().equals("Administrator")){
+			int rowCount = userRepository.updateDetailsByEmail(user.getEmail(), user.getRole(), user.getGroupName(), user.getBatchName());
+			if(rowCount>=1) {
+				MailRequest request = new MailRequest(user.getName(), user.getEmail(), "Details Updated", "Your details has been modified by the administrator. Please login to see the changes");
+				emailService.sendEmail(request);
+				return "Success";
+			}
+			else
+				return "Failure";
+		}else {
+			int rowCount = userRepository.updateMobileByEmail(email, user.getMobile());
+			if(rowCount>=1){
+				MailRequest request = new MailRequest(user.getName(), user.getEmail(), "Details Updated", "Your details updated successfully");
+				emailService.sendEmail(request);
+				return "Success";
+			}
+			else
+				return "Failure";
+		}
+	}
+
+	public String addUser(String email, User user) throws InvalidUserException {
+		
+		User u = userRepository.findByEmail(email);
+		if(u.getRole().equals("Administrator")) {
+			
+			String code = user.getName().substring(0,3).toUpperCase();
+			String password = "Wipro@";
+			
+            int random = 0;
+			
+			while(random<100) 
+				random = (int)(Math.random()*1000);
+			
+			password = password+Integer.toString(random);
+			random = 0;
+			
+			while(random<100) 
+				random = (int)(Math.random()*1000);
+			
+			code = code+Integer.toString(random);
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			
+			user.setCode(code);
+			user.setPassword(encoder.encode(password));
+			user.setReferralCode(u.getCode());
+			
+			User us = userRepository.save(user);
+			
+			if(us!=null) {
+				MailRequest request = new MailRequest(user.getName(), user.getEmail(), "Diet Program", "You are added as a "+user.getRole()+" to our diet program. your username is your email id."
+						+ "  Your initial password is "+password+". Please update your mobile number once you logged in. you can user the code "+code+" to refer your friends to this program");
+				emailService.sendEmail(request);
+				return "Success";
+			}
+			return "Failure";
+			
+		}
+		else
+		    throw new InvalidUserException("Only administrator can add users. You are not authorized");
 		
 	}
 

@@ -16,4 +16,14 @@ public interface UserRepository extends JpaRepository<User, String> {
 	@Query("update User u set u.password = ?2 where u.email = ?1")
 	int updatePasswordByEmail(String Email, String newPassword);
 
+	int deleteByEmail(String user);
+	
+	@Modifying
+	@Query("update User u set u.mobile = ?2 where u.email = ?1")
+	int updateMobileByEmail(String Email, String newMobile);
+	
+	@Modifying
+	@Query("update User u set u.role = ?2, u.groupName = ?3, u.batchName = ?4 where u.email = ?1")
+	int updateDetailsByEmail(String Email, String role, String groupName, String batchName);
+
 }

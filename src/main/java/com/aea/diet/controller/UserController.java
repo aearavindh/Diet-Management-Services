@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +37,38 @@ public class UserController {
 	public User getUser(@RequestParam String email) {
 		
 		return userService.getUser(email);
+		
+	}
+	
+	@GetMapping("/all-users")
+	@ApiOperation("Get the details of all users")
+	public List<User> getAllUsers(@RequestParam String email) throws InvalidUserException {
+		
+		return userService.getAllUsers(email);
+		
+	}
+	
+	@PostMapping("/add-user")
+	@ApiOperation("Add a user to the program")
+	public String addUser(@RequestParam String email, @RequestBody User user) throws InvalidUserException {
+		
+		return userService.addUser(email, user);
+		
+	}
+	
+	@DeleteMapping("/remove-user")
+	@ApiOperation("Remove a particular user from the program")
+	public String removeUser(@RequestParam String email, @RequestParam String user) throws InvalidUserException {
+		
+		return userService.removeUser(email, user);
+		
+	}
+	
+	@PutMapping("/modify-user")
+	@ApiOperation("Modify a user details")
+	public String modifyUser(@RequestParam String email, @RequestBody User user) throws InvalidUserException {
+		
+		return userService.modifyUser(email, user);
 		
 	}
 	
