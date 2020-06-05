@@ -19,6 +19,7 @@ import com.aea.diet.model.Batch;
 import com.aea.diet.model.Challenger;
 import com.aea.diet.model.DailyLog;
 import com.aea.diet.model.DietGroup;
+import com.aea.diet.model.Message;
 import com.aea.diet.model.MonthlyChart;
 import com.aea.diet.model.User;
 import com.aea.diet.service.UserService;
@@ -160,6 +161,38 @@ public class UserController {
 	public List<MonthlyChart> getCharts() {
 		
 		return userService.getCharts();
+		
+	}
+	
+	@PostMapping("/message-to-user")
+	@ApiOperation("Send message to user")
+	public String sendMessageToUser(@RequestBody Message message) {
+		
+		return userService.sendMessageToUser(message);
+		
+	}
+	
+	@PostMapping("/message-to-batch")
+	@ApiOperation("Send message to a batch")
+	public String sendMessageToBatch(@RequestBody Message message) {
+		
+		return userService.sendMessageToBatch(message);
+		
+	}
+	
+	@PostMapping("/message-to-group")
+	@ApiOperation("Send message to a group")
+	public String sendMessageToGroup(@RequestBody Message message, @RequestParam String batchName) {
+		
+		return userService.sendMessageToGroup(message, batchName);
+		
+	}
+	
+	@GetMapping("/messages")
+	@ApiOperation("Get all the messages to a particular user")
+	public List<Message> getMessages(@RequestParam String email) {
+		
+		return userService.getMessages(email);
 		
 	}
 	

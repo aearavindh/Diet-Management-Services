@@ -1,6 +1,7 @@
 package com.aea.diet.service;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.aea.diet.dao.ChartRepository;
 import com.aea.diet.dao.DonationRepository;
 import com.aea.diet.dao.GroupRepository;
 import com.aea.diet.dao.LogRepository;
+import com.aea.diet.dao.MessageRepository;
 import com.aea.diet.dao.UserRepository;
 import com.aea.diet.exception.InvalidUserException;
 import com.aea.diet.model.Batch;
@@ -22,6 +24,7 @@ import com.aea.diet.model.DietGroup;
 import com.aea.diet.model.Donation;
 import com.aea.diet.model.MailRequest;
 import com.aea.diet.model.MailResponse;
+import com.aea.diet.model.Message;
 import com.aea.diet.model.MonthlyChart;
 import com.aea.diet.model.User;
 
@@ -48,6 +51,9 @@ public class UserService {
 	
 	@Autowired
 	private LogRepository logRepository;
+	
+	@Autowired
+	private MessageRepository messageRepository;
 	
 	@Autowired
 	private EmailService emailService;
@@ -347,6 +353,53 @@ public class UserService {
 	public List<MonthlyChart> getCharts() {
 
         return chartRepository.findAll();
+		
+	}
+
+	public String sendMessageToUser(Message message) {
+		
+		messageRepository.save(message);
+		return "Success";
+		
+	}
+
+	public String sendMessageToBatch(Message message) {
+		
+		List<User> users = userRepository.findAll();
+		
+		Iterator<User> usersIterator = users.iterator();
+		 
+		while(usersIterator.hasNext()) {
+		    User u = usersIterator.next();
+		    if(u.getRole().equals("Challenger") && u.getBatchName().equals(message.getTo())) {
+		    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFrom(), message.getMessage()));
+		    }
+		}
+		
+		return "Success";
+		
+	}
+
+	public String sendMessageToGroup(Message message, String batchName) {
+
+        List<User> users = userRepository.findAll();
+		
+		Iterator<User> usersIterator = users.iterator();
+		 
+		while(usersIterator.hasNext()) {
+		    User u = usersIterator.next();
+		    if(u.getRole().equals("Challenger") && u.getBatchName().equals(batchName) && u.getGroupName().equals(message.getTo())) {
+		    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFrom(), message.getMessage()));
+		    }
+		}
+		
+		return "Success";
+		
+	}
+
+	public List<Message> getMessages(String email) {
+		
+		return messageRepository.findByTo(email);
 		
 	}
 
