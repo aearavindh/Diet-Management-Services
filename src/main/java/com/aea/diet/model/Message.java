@@ -42,7 +42,7 @@ public class Message {
 		return to;
 	}
 
-	public String getFrom() {
+	public String getFromUser() {
 		return fromUser;
 	}
 

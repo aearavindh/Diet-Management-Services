@@ -357,7 +357,9 @@ public class UserService {
 	}
 
 	public String sendMessageToUser(Message message) {
-		
+		User u = userRepository.findByEmail(message.getTo());
+		if(u==null)
+			return "Invalid user";
 		messageRepository.save(message);
 		return "Success";
 		
@@ -374,14 +376,14 @@ public class UserService {
 			while(usersIterator.hasNext()) {
 			    User u = usersIterator.next();
 			    if(u.getRole().equals("Challenger")) {
-			    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFrom(), message.getMessage()));
+			    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFromUser(), message.getMessage()));
 			    }
 			}
 		}else if(message.getTo().equals("Motivators")) {
 			while(usersIterator.hasNext()) {
 			    User u = usersIterator.next();
 			    if(u.getRole().equals("Motivator")) {
-			    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFrom(), message.getMessage()));
+			    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFromUser(), message.getMessage()));
 			    }
 			}
 		}else {
@@ -389,7 +391,7 @@ public class UserService {
 		while(usersIterator.hasNext()) {
 		    User u = usersIterator.next();
 		    if(u.getRole().equals("Challenger") && u.getBatchName().equals(message.getTo())) {
-		    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFrom(), message.getMessage()));
+		    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFromUser(), message.getMessage()));
 		    }
 		}
 		}
@@ -407,7 +409,7 @@ public class UserService {
 		while(usersIterator.hasNext()) {
 		    User u = usersIterator.next();
 		    if(u.getRole().equals("Challenger") && u.getBatchName().equals(batchName) && u.getGroupName().equals(message.getTo())) {
-		    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFrom(), message.getMessage()));
+		    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFromUser(), message.getMessage()));
 		    }
 		}
 		
