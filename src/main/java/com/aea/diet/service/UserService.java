@@ -369,11 +369,29 @@ public class UserService {
 		
 		Iterator<User> usersIterator = users.iterator();
 		 
+		
+		if(message.getTo().equals("Challengers")) {
+			while(usersIterator.hasNext()) {
+			    User u = usersIterator.next();
+			    if(u.getRole().equals("Challenger")) {
+			    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFrom(), message.getMessage()));
+			    }
+			}
+		}else if(message.getTo().equals("Motivators")) {
+			while(usersIterator.hasNext()) {
+			    User u = usersIterator.next();
+			    if(u.getRole().equals("Motivator")) {
+			    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFrom(), message.getMessage()));
+			    }
+			}
+		}else {
+		
 		while(usersIterator.hasNext()) {
 		    User u = usersIterator.next();
 		    if(u.getRole().equals("Challenger") && u.getBatchName().equals(message.getTo())) {
 		    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFrom(), message.getMessage()));
 		    }
+		}
 		}
 		
 		return "Success";
