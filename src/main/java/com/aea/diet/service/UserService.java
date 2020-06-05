@@ -386,6 +386,13 @@ public class UserService {
 			    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFromUser(), message.getMessage()));
 			    }
 			}
+		}else if(message.getTo().equals("Administrators")) {
+			while(usersIterator.hasNext()) {
+			    User u = usersIterator.next();
+			    if(u.getRole().equals("Administrator")) {
+			    	messageRepository.save(new Message(message.getDate(), u.getEmail(), message.getFromUser(), message.getMessage()));
+			    }
+			}
 		}else {
 		
 		while(usersIterator.hasNext()) {
