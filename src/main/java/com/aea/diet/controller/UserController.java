@@ -199,5 +199,21 @@ public class UserController {
 		
 	}
 	
+	@GetMapping("/report/{batch}")
+	@ApiOperation("Get the report for a particular batch")
+	public String getReport(@PathVariable String batch) {
+		
+		return userService.getReport(batch);
+		
+	}
+	
+	@DeleteMapping("/end-program")
+	@ApiOperation("Delete all details from all tables except administrator user data and batch repository")
+	public String endProgram(@RequestParam String email) throws InvalidUserException {
+		
+		return userService.endProgram(email);
+		
+	}
+	
 
 }

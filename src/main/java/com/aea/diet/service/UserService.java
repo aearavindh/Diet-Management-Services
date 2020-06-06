@@ -455,4 +455,44 @@ public class UserService {
 		
 	}
 
+	public String endProgram(String email) throws InvalidUserException {
+		
+		User u = userRepository.findByEmail(email);
+		if(u.getRole().equals("Administrator")){
+			challengerRepository.deleteAll();
+			chartRepository.deleteAll();
+			donationRepository.deleteAll();
+			groupRepository.deleteAll();
+			logRepository.deleteAll();
+			messageRepository.deleteAll();
+			postRepository.deleteAll();
+			userRepository.deleteByRole("Challenger");
+			userRepository.deleteByRole("Motivator");
+			return "Success";
+		}
+		else
+		    throw new InvalidUserException("Only administrator can end the program. You are not authorized");
+		
+		
+	}
+
+	public String getReport(String batch) {
+		
+		List<User> users = userRepository.findByBatchName(batch);
+		List<User> motivators = userRepository.findByRole("Motivator");
+		List<User> challengers = userRepository.findByRole("Challenger");
+		List<DietGroup> groups = groupRepository.findAll();
+		int groupsCount = 0;
+		Iterator<DietGroup> groupsIterator = groups.iterator();
+		 
+		while(groupsIterator.hasNext()) {
+		    DietGroup g = groupsIterator.next();
+		    if(g.getBatch().getName().equals(batch))
+		    	groupsCount+=1;
+		}
+		
+		return "STATISTICS: Users - "+users.size()+" Motivators - "+motivators.size()+" Challengers - "+challengers.size()+" Groups - "+groupsCount;
+		
+	}
+
 }
