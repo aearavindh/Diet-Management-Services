@@ -1,5 +1,6 @@
 package com.aea.diet.service;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.aea.diet.dao.BatchRepository;
 import com.aea.diet.dao.ChallengerRepository;
@@ -15,6 +17,7 @@ import com.aea.diet.dao.DonationRepository;
 import com.aea.diet.dao.GroupRepository;
 import com.aea.diet.dao.LogRepository;
 import com.aea.diet.dao.MessageRepository;
+import com.aea.diet.dao.PostRepository;
 import com.aea.diet.dao.UserRepository;
 import com.aea.diet.exception.InvalidUserException;
 import com.aea.diet.model.Batch;
@@ -26,6 +29,7 @@ import com.aea.diet.model.MailRequest;
 import com.aea.diet.model.MailResponse;
 import com.aea.diet.model.Message;
 import com.aea.diet.model.MonthlyChart;
+import com.aea.diet.model.Post;
 import com.aea.diet.model.User;
 
 @Service
@@ -54,6 +58,9 @@ public class UserService {
 	
 	@Autowired
 	private MessageRepository messageRepository;
+	
+	@Autowired
+	private PostRepository postRepository;
 	
 	@Autowired
 	private EmailService emailService;
@@ -427,6 +434,24 @@ public class UserService {
 	public List<Message> getMessages(String email) {
 		
 		return messageRepository.findByTo(email);
+		
+	}
+
+	public String post(MultipartFile file, String data) throws IOException {
+		
+		String[] d = data.split("/");
+		System.out.println(file);
+		System.out.println(file.getBytes());
+		Post post = new Post(d[0], d[1], d[2], d[3], file.getBytes());
+		postRepository.save(post);
+		return "Success";
+	}
+
+	public List<Post> getPosts(String email) {
+		
+		User user = userRepository.findByEmail(email);
+		
+		return postRepository.findByTo(user.getBatchName());
 		
 	}
 

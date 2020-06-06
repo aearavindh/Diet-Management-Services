@@ -1,5 +1,6 @@
 package com.aea.diet.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.aea.diet.exception.InvalidUserException;
 import com.aea.diet.model.Batch;
@@ -21,6 +23,7 @@ import com.aea.diet.model.DailyLog;
 import com.aea.diet.model.DietGroup;
 import com.aea.diet.model.Message;
 import com.aea.diet.model.MonthlyChart;
+import com.aea.diet.model.Post;
 import com.aea.diet.model.User;
 import com.aea.diet.service.UserService;
 
@@ -180,19 +183,19 @@ public class UserController {
 		
 	}
 	
-	@PostMapping("/message-to-group")
-	@ApiOperation("Send message to a group")
-	public String sendMessageToGroup(@RequestBody Message message, @RequestParam String batchName) {
+	@PostMapping("/post")
+	@ApiOperation("Post file and message to a group")
+	public String post(@RequestParam("plan") MultipartFile file, @RequestParam String data) throws IOException {
 		
-		return userService.sendMessageToGroup(message, batchName);
+		return userService.post(file, data);
 		
 	}
 	
-	@GetMapping("/messages")
-	@ApiOperation("Get all the messages to a particular user")
-	public List<Message> getMessages(@RequestParam String email) {
+	@GetMapping("/posts")
+	@ApiOperation("Get all the posts to a particular user")
+	public List<Post> getPosts(@RequestParam String email) {
 		
-		return userService.getMessages(email);
+		return userService.getPosts(email);
 		
 	}
 	
