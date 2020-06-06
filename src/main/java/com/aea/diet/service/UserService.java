@@ -479,8 +479,20 @@ public class UserService {
 	public String getReport(String batch) {
 		
 		List<User> users = userRepository.findByBatchName(batch);
-		List<User> motivators = userRepository.findByRole("Motivator");
-		List<User> challengers = userRepository.findByRole("Challenger");
+		
+		int mCount = 0;
+		int cCount = 0;
+		
+		Iterator<User> usersIterator = users.iterator();
+		 
+		while(usersIterator.hasNext()) {
+		    User u = usersIterator.next();
+		    if(u.getRole().equals("Motivator"))
+				mCount+=1;
+			else if(u.getRole().equals("Challenger"))
+				cCount+=1;
+		}
+		
 		List<DietGroup> groups = groupRepository.findAll();
 		int groupsCount = 0;
 		Iterator<DietGroup> groupsIterator = groups.iterator();
@@ -491,7 +503,7 @@ public class UserService {
 		    	groupsCount+=1;
 		}
 		
-		return "STATISTICS: Users - "+users.size()+" Motivators - "+motivators.size()+" Challengers - "+challengers.size()+" Groups - "+groupsCount;
+		return "STATISTICS: Users - "+users.size()+" Motivators - "+mCount+" Challengers - "+cCount+" Groups - "+groupsCount;
 		
 	}
 
