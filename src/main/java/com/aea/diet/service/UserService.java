@@ -65,11 +65,15 @@ public class UserService {
 	@Autowired
 	private EmailService emailService;
 	
+	/* Get the particular user based on email */
+	
 	public User getUser(String email) {
 		
 		return userRepository.findByEmail(email);
 		
 	}
+	
+	/* Get all the pending requests by sending the administrator email */
 	
 	public List<Challenger> getRequests(String email) throws InvalidUserException{
 		
@@ -80,6 +84,8 @@ public class UserService {
 		    throw new InvalidUserException("Only administrator can get the requests. You are not authorized");
 			
 	}
+	
+	/* Get all the batches by sending the administrator email */
 
 	public List<Batch> getBatches(String email) throws InvalidUserException {
 		
@@ -91,6 +97,8 @@ public class UserService {
 		
 	}
 	
+	/* Get all the groups by sending the administrator email */
+	
     public List<DietGroup> getGroups(String email) throws InvalidUserException {
 		
     	User user = userRepository.findByEmail(email);
@@ -100,6 +108,8 @@ public class UserService {
 			throw new InvalidUserException("Only administrator can get the groups. You are not authorized");
 		
 	}
+    
+    /* Create a group by sending group bean and administrator email */
 
 	public String createGroup(DietGroup[] dietGroups, String email) throws InvalidUserException {
 		
@@ -119,6 +129,8 @@ public class UserService {
 		throw new InvalidUserException("Only administrator can create a group. You are not authorized");
 		
 	}
+	
+	/* Send refer mail to a user by sending the sender and receiver */
 
 	public String referChallenger(String sender, String receiver) {
 		
@@ -134,6 +146,8 @@ public class UserService {
 			return "Failure";
 		
 	}
+	
+	/* Donate by sending donar and amount */
 
 	public String donate(String donor, String amount) {
 		
@@ -144,6 +158,9 @@ public class UserService {
 			return "Failure";
 
 	}
+	
+	/* Update the status of the challenger which administrator sent. If the status is accepted,
+	 * create a user in the user table and send acceptance/rejection mail */
 
 	public String updateStatus(String status, String email, Challenger challenger) throws InvalidUserException {
 		
@@ -230,6 +247,8 @@ public class UserService {
 		
 		
 	}
+	
+	/* Get all the users by sending the administrator email */
 
 	public List<User> getAllUsers(String email) throws InvalidUserException {
 		
@@ -240,6 +259,8 @@ public class UserService {
 		    throw new InvalidUserException("Only administrator can get the users. You are not authorized");
 		
 	}
+	
+	/* Remove a user from user table and send mail to user by sending the administrator email */
 
 	public String removeUser(String email, String user) throws InvalidUserException {
 		
@@ -260,6 +281,8 @@ public class UserService {
 		
 		
 	}
+	
+	/* Modify a user from user table and send mail to user */
 
 	public String modifyUser(String email, User user) {
 		
@@ -284,6 +307,8 @@ public class UserService {
 				return "Failure";
 		}
 	}
+	
+	/* Add a user to the user table by sending the administrator email */
 
 	public String addUser(String email, User user) throws InvalidUserException {
 		
@@ -326,6 +351,8 @@ public class UserService {
 		    throw new InvalidUserException("Only administrator can add users. You are not authorized");
 		
 	}
+	
+	/* Add a log to the daily_log table. If a log for the current date already available, update it */
 
 	public String updateLog(DailyLog dailyLog) {
 		
@@ -338,6 +365,8 @@ public class UserService {
 		return "Success";
 		
 	}
+	
+	/* Add a char to the monthly_chart table. If a chart for the current month already available, update it */
 
 	public String updateChart(MonthlyChart monthlyChart) {
 		
@@ -350,18 +379,24 @@ public class UserService {
 		return "Success";
 		
 	}
+	
+	/* Get all the daily logs */
 
 	public List<DailyLog> getLogs() {
 		
 		return logRepository.findAll();
 				
 	}
+	
+	/* Get all the monthly charts */
 
 	public List<MonthlyChart> getCharts() {
 
         return chartRepository.findAll();
 		
 	}
+	
+	/* Send message to a particular user */
 
 	public String sendMessageToUser(Message message) {
 		User u = userRepository.findByEmail(message.getTo());
@@ -371,6 +406,8 @@ public class UserService {
 		return "Success";
 		
 	}
+	
+	/* Send message to a particular batch */
 
 	public String sendMessageToBatch(Message message) {
 		
@@ -413,6 +450,8 @@ public class UserService {
 		return "Success";
 		
 	}
+	
+	/* Send mail to a particular group */
 
 	public String sendMessageToGroup(Message message, String batchName) {
 
@@ -430,12 +469,16 @@ public class UserService {
 		return "Success";
 		
 	}
-
+    
+	/* Get all the messages for a particular user */
+	
 	public List<Message> getMessages(String email) {
 		
 		return messageRepository.findByTo(email);
 		
 	}
+	
+	/* Post the diet/workout plan to a particular batch */
 
 	public String post(MultipartFile file, String data) throws IOException {
 		
@@ -446,6 +489,8 @@ public class UserService {
 		postRepository.save(post);
 		return "Success";
 	}
+	
+	/* Get all the posts for a particular user */
 
 	public List<Post> getPosts(String email) {
 		
@@ -454,6 +499,8 @@ public class UserService {
 		return postRepository.findByTo(user.getBatchName());
 		
 	}
+	
+	/* End the current program by truncating all tables except administrator user and batch table */
 
 	public String endProgram(String email) throws InvalidUserException {
 		
@@ -475,7 +522,9 @@ public class UserService {
 		
 		
 	}
-
+    
+	/* Get the report for a particular batch */
+	
 	public String getReport(String batch) {
 		
 		List<User> users = userRepository.findByBatchName(batch);

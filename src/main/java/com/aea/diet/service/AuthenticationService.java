@@ -23,6 +23,8 @@ public class AuthenticationService {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	/* Add the challenger details to the challenger table */
 
 	public String register(Challenger challenger) {
 		
@@ -34,6 +36,8 @@ public class AuthenticationService {
 			return null;
 		
 	}
+	
+	/* Check whether the user credentials are right or wrong */
 	
 	public String login(AuthUser authUser) {
 		
@@ -52,6 +56,8 @@ public class AuthenticationService {
 		}
 			
 	}
+	
+	/* Check the user details and send the otp for changing the password */
 
 	public Response forgotPassword(String email) {
 		
@@ -73,7 +79,9 @@ public class AuthenticationService {
 		return response;
 	    
 	}
-
+    
+	/* Update the user's password in the user table */
+	
 	public String changePassword(String email, String newPassword) {
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
