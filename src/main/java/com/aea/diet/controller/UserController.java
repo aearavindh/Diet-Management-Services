@@ -183,6 +183,14 @@ public class UserController {
 		
 	}
 	
+	@GetMapping("/messages")
+	@ApiOperation("Get all the messages to a particular user")
+	public List<Message> getMessages(@RequestParam String email) {
+		
+		return userService.getMessages(email);
+		
+	}
+	
 	@PostMapping("/post")
 	@ApiOperation("Post file and message to a group")
 	public String post(@RequestParam("plan") MultipartFile file, @RequestParam String data) throws IOException {
