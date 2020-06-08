@@ -186,14 +186,17 @@ public class UserService {
 			String password = "Wipro@";
 			String groupName = null;
 			String batchName = null;
+			int batchId = 101;
 			String code = challenger.getName().substring(0,3).toUpperCase();
 			
 			if(Integer.parseInt(challenger.getBmi().substring(0,2))<25)
 				batchName = "BELOW_BMI_25"; 
-			else 
+			else {
 				batchName = "ABOVE_BMI_25";
+				batchId = 102;
+			}
 			
-			List<DietGroup> group = groupRepository.findAll();
+			List<DietGroup> group = groupRepository.findByBatchId(batchId);
 			
 			if(group.get(0).getName().equals("CHENNAI")) {
 				groupName = challenger.getCity().toUpperCase();
